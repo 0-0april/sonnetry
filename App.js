@@ -10,11 +10,12 @@ import About from './pages/About';
 import PostDetail from './pages/PostDetail';
 import NotFound from './pages/NotFound';
 import WriterLogin from './pages/WriterLogin';
+import WriterPanel from './pages/WriterPanel';
 import './App.css';
 
 function AppContent() {
   const location = useLocation();
-  const hideLayout = location.pathname === '/writer-login-page';
+  const hideLayout = location.pathname === '/writer-login-page' || location.pathname === '/writer-panel';
 
   return (
     <div className="App">
@@ -28,6 +29,7 @@ function AppContent() {
           <Route path="/about" element={<About />} />
           <Route path="/post/:id" element={<PostDetail />} />
           <Route path="/writer-login-page" element={<WriterLogin />} />
+          <Route path="/writer-panel" element={<WriterPanel />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
