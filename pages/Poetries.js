@@ -1,0 +1,63 @@
+import React, { useState, useEffect } from 'react';
+import PostCard from '../components/PostCard';
+import './Poetries.css';
+
+function Poetries() {
+  const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/posts.json')
+      .then(response => response.json())
+      .then(data => {
+        const poetries = data.filter(post => post.category === 'poetries');
+        setPosts(poetries);
+        setFilteredPosts(poetries);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching posts:', error);
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    const filtered = posts.filter(post =>
+      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredPosts(filtered);
+  }, [searchTerm, posts]);
+
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  return (
+    <div className="poetries">
+      <h1>Poetries</h1>
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search poetries..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          aria-label="Search poetries"
+        />
+      </div>
+      <div className="posts-grid">
+        {filteredPosts.length > 0 ? (
+          filteredPosts.map(post => (
+            <PostCard key={post.id} post={post} />
+          ))
+        ) : (
+          <p>No poetries found matching your search.</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default Poetries;
