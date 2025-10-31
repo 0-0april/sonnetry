@@ -24,7 +24,7 @@ function WriterLogin() {
 			if (username === 'writer' && password === 'password') {
 				// simple demo token
 				localStorage.setItem('sonnetry_auth', 'demo-token');
-				navigate('/');
+				navigate('/writer-panel');
 			} else {
 				setError('Invalid credentials. Try username "writer" and password "password".');
 			}
